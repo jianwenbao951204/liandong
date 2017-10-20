@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="__STATIC__/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function(){
+        fn();
+
+        function fn(){
+            var html = '<option>请选择市</option>';
+            $.ajax({
+                type:"post",
+                url:"{:URL('Index/selectPro')}",
+                dataType:"json",
+
+                success:function(data){
+                    for (var i = 0; i < data.length; i++) {
+                        $("#S1").append("<option value=" + data[i].areaSort + ">" + data[i].areaName + "</option>");
+                        <!-- console.log(data[i]); -->
+                    }
+                }
+            });
+            $("#c1").html(html);
+            $("#a1").html( '<option>请选择区/县</option>');
+        }
+        $("#S1").change(function(){
+              var shengId = $("#S1").val();
+            var html = '<option>请选择市</option>';
+            $.ajax({
+                type:"post",
+                url:"{:URL('Index/selectCty')}",
+                dataType:"json",
+                data:{areaSort:shengId},
+                success:function(data){
+                    for (var i = 0; i < data.length; i++) {
+                        $("#c1").append("<option value=" + data[i].areaSort + ">" + data[i].areaName + "</option>");
+                        <!-- console.log(data[i]); -->
+                    }
+
+                }
+
+            });
+            $("#c1").html(html);
+            $("#a1").html( '<option>请选择区/县</option>');
+        });
+        $("#c1").change(function(){
+            var shiId = $("#c1").val();
+            var html = '<option>请选择区/县</option>';
+            $.ajax({
+                type:"post",
+                url:"{:URL('Index/selectArea')}",
+                dataType:"json",
+                data:{areaSort:shiId},
+                success:function(data){
+                    for (var i = 0; i < data.length; i++) {
+                        $("#a1").append("<option value="  + ">" + data[i].areaName + "</option>");
+                        <!-- console.log(data[i]); -->
+                    }
+                }
+            });
+            $("#a1").html(html);
+        })
+    });
+
+</script>
+
+<select id="S1">
+    <option>请选择省</option>
+
+</select>
+<select id="c1">
+    <option>请选择市</option>
+</select>
+<select id="a1">
+    <option>请选择区</option>
+</select>
+<a href="{:URL('Article/index')}">文章列表</a>
+</body>
+</html>
